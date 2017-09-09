@@ -1,0 +1,117 @@
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+
+group = 'com.capone'
+version = '1.0'
+
+description = """CC API"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+mainClassName = 'com.capone.ccapi.CreditCardApplication'
+
+shadowJar {
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    manifest {
+        attributes 'Implementation-Title': rootProject.name
+        attributes 'Implementation-Version': rootProject.version
+        attributes 'Implementation-Vendor-Id': rootProject.group
+        attributes 'Build-Time': ZonedDateTime.now(ZoneId.of("UTC"))
+                .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+        attributes 'Built-By': InetAddress.localHost.hostName
+        attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
+        attributes 'Main-Class': mainClassName
+    }
+
+    archiveName 'CCApi-1.0.jar'
+}
+
+task('wrapper', type: Wrapper) {
+    gradleVersion = '4.0.2'
+}
+
+task stage() {
+    dependsOn= ['shadowJar','build', 'clean']
+    doLast {
+        javaexec {
+            main = '-jar'
+            args = [
+                      'build/libs/CCApi-1.0.jar'
+                    , 'db'
+                    , 'migrate'
+                    , '--migrations'
+                    , 'src/main/resources/migrations.sql'
+                    , 'config.yml'
+            ]
+        }
+    }
+}
+
+build.mustRunAfter clean
+shadowJar.mustRunAfter build
+
+run {
+    args = ['server', 'config.yml']
+}
+
+tasks.withType(Test) {
+    testLogging {
+        // set options for log level LIFECYCLE
+        events "passed", "skipped", "failed", "standardOut"
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+
+        // set options for log level DEBUG and INFO
+        debug {
+            events "started", "passed", "skipped", "failed", "standardOut", "standardError"
+            exceptionFormat "full"
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+
+        afterSuite { desc, result ->
+            if (!desc.parent) { // will match the outermost suite
+                def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+                def startItem = '|  ', endItem = '  |'
+                def repeatLength = startItem.length() + output.length() + endItem.length()
+                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+            }
+        }
+    }
+}
+
+repositories {
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+    compile group: 'io.dropwizard', name: 'dropwizard-core', version:'1.1.0'
+    compile group: 'io.dropwizard', name: 'dropwizard-http2', version:'1.1.0'
+    compile group: 'io.dropwizard', name: 'dropwizard-hibernate', version:'1.1.0'
+    compile group: 'io.dropwizard', name: 'dropwizard-jdbi', version:'1.1.0'
+    compile group: 'io.dropwizard', name: 'dropwizard-migrations', version:'1.1.0'
+    compile group: 'org.postgresql', name: 'postgresql', version:'42.1.1'
+    compile group: 'com.washingtonpost.dropwizard', name: 'dropwizard-json-exceptions', version:'2.0.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
+    testCompile group: 'io.dropwizard', name: 'dropwizard-testing', version:'1.1.4'
+    testCompile group: 'junit', name: 'junit', version:'4.11'
+    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.9.5'
+    testCompile group: 'org.apache.httpcomponents', name: 'fluent-hc', version:'4.2.5'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '1.0.0'
+}
