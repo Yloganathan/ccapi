@@ -3,7 +3,6 @@ package com.capone.ccapi.resources;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.mockito.Mockito.*;
 import org.junit.*;
-//import org.junit.assertThat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
