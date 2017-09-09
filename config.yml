@@ -1,9 +1,37 @@
+database:
+  # the name of your JDBC driver
+  # TODO setup role and password so the system does not use super user on the database
+  driverClass: org.postgresql.Driver
+
+  # the JDBC URL. ENV variable to point to local pg or heroku pg
+  url: ${JDBC_DATABASE_URL}
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyApplication Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open -- Heroku has a max of 20
+  maxSize: 20
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
 logging:
-  level: DEBUG
+  level: INFO
   loggers:
-    com.capone.ccapi: DEBUG
+    com.capone.ccapi: INFO
     org.hibernate.SQL:
-          level: DEBUG
+          level: INFO
 
 # Logback's Time Based Rolling Policy - archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}.log.gz
 # Logback's Size and Time Based Rolling Policy -  archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}-%i.log.gz
