@@ -7,9 +7,14 @@ import javax.ws.rs.*;
 @Path("/health")
 @Produces(MediaType.APPLICATION_JSON)
 public class HealthResource {
-	 @GET
-	 @UnitOfWork
-	 public String checkHealth(){
-	   return "A OK";
-	 }
+
+	public HealthResource(){
+
+	}
+
+	@GET
+	@UnitOfWork
+	public String checkHealth(){
+	  return "A OK";
+	}
 }
