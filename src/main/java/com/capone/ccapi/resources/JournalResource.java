@@ -28,11 +28,4 @@ public class JournalResource
 		return createdJournal;
 	}
 
-	@GET
-	@Path("/{id}")
-	@UnitOfWork
-	public List<Journal> getAllJournalsForAccount(@PathParam("id") LongParam accountId) {
-		return journalDAO.findJournalsByAccountId(accountId.get());
-	}
-
 }

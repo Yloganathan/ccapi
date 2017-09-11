@@ -5,6 +5,7 @@ import javax.persistence.GenerationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name = "journals")
@@ -23,14 +24,21 @@ public class Journal
 	private String transactionType;
 
     @Column(name ="createdAt", nullable = false)
-    @JsonProperty("timeStamp")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp timeStamp; 
 
-	@Column(name ="amount")
+	@Column(name ="amount", nullable = false)
 	private double amount;
 
 
 	public Journal(){}
+
+    public Journal(long accountid, String type, double amount, Timestamp createdAt) {
+        this.accountId = accountid;
+        this.transactionType = type;
+        this.amount = amount;
+        this.timeStamp = createdAt;
+    }
 
 	public long getId() {
         return id;
@@ -62,6 +70,14 @@ public class Journal
 
     public void setAmount(double amount) {
     	this.amount = amount;
+    }
+
+    public String getTimeStamp() {
+        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(timeStamp);
+    }
+
+    public void setTimestamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     @Override

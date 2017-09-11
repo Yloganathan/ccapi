@@ -26,12 +26,9 @@ public class LedgerDAO extends AbstractDAO<Ledger>
         CriteriaQuery<Ledger> criteria = builder.createQuery( Ledger.class );
         Root<Ledger> LedgerRoot = criteria.from(Ledger.class);
         criteria.select( LedgerRoot);
-        // Predicate predicate1 = builder.equal( LedgerRoot.get( Ledger_.type ), type );
-        // Predicate predicate2 = builder.equal( LedgerRoot.get( Ledger_.accountId ), accountId );
         criteria.where(builder.and(new Predicate[] { builder.equal( LedgerRoot.get( Ledger_.type ), type )
         	, builder.equal( LedgerRoot.get( Ledger_.accountId ), accountId )}) 
         	);
-        //criteria.where( builder.equal( LedgerRoot.get( Ledger_.type ), type ) );
         return list(criteria);
 	}
 }

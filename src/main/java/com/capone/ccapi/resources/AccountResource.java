@@ -22,14 +22,8 @@ public class AccountResource
 
 	@POST
 	@UnitOfWork
-	public long createAccount(Account account) {
-		return accountDAO.create(account).getId();
-	}
-
-	@GET
-	@UnitOfWork
-	public double getAllAccount() {
-		return LedgerService.getInstance().getSumOfPrincipal(1);
+	public Account createAccount(Account account) {
+		return accountDAO.create(account);
 	}
 
 	@GET
