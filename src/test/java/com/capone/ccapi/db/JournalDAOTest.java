@@ -9,7 +9,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,8 +34,7 @@ public class JournalDAOTest {
 
     @Test
     public void createJournal() {
-        Timestamp currentTime =  new Timestamp(System.currentTimeMillis());
-        final Journal journal = daoTestRule.inTransaction(() -> journalDAO.create(new Journal(account.getId(),"purchase",500, currentTime)));
+        final Journal journal = daoTestRule.inTransaction(() -> journalDAO.create(new Journal(account.getId(),"purchase",500)));
         assertThat(journal.getId()).isGreaterThan(0);
         assertThat(journal.getAccountId()).isEqualTo(account.getId());
         assertThat(journal.getTransactionType()).isEqualTo("purchase");
@@ -47,13 +45,12 @@ public class JournalDAOTest {
     @Test
     public void findAll() {
         long accountId = account.getId();
-        Timestamp currentTime =  new Timestamp(System.currentTimeMillis());
         Account account2 = daoTestRule.inTransaction(() -> accountDAO.create(new Account("WonerWoman")));
         daoTestRule.inTransaction(() -> {
-            journalDAO.create(new Journal(accountId,"purchase",500.11,currentTime));
-            journalDAO.create(new Journal(accountId,"purchase",400.50,currentTime));
-            journalDAO.create(new Journal(accountId,"purchase",99,currentTime));
-            journalDAO.create(new Journal(account2.getId(),"purchase",1000,currentTime));
+            journalDAO.create(new Journal(accountId,"purchase",500.11));
+            journalDAO.create(new Journal(accountId,"purchase",400.50));
+            journalDAO.create(new Journal(accountId,"purchase",99));
+            journalDAO.create(new Journal(account2.getId(),"purchase",1000));
         });
 
         final List<Journal> journals = journalDAO.findJournalsByAccountId(accountId);
@@ -62,7 +59,7 @@ public class JournalDAOTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void handlesNullTransactionType() {
-        daoTestRule.inTransaction(() -> journalDAO.create(new Journal(account.getId(), null, 500, new Timestamp(System.currentTimeMillis()))));
+        daoTestRule.inTransaction(() -> journalDAO.create(new Journal(account.getId(), null, 500)));
     }
 
 

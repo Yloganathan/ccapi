@@ -23,7 +23,7 @@ public class Journal
     @JsonProperty("type")
 	private String transactionType;
 
-    @Column(name ="createdAt", nullable = false)
+    @Column(name ="createdAt")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp timeStamp; 
 
@@ -31,13 +31,15 @@ public class Journal
 	private double amount;
 
 
-	public Journal(){}
+	public Journal(){
+        this.timeStamp = new Timestamp(System.currentTimeMillis());
+    }
 
-    public Journal(long accountid, String type, double amount, Timestamp createdAt) {
+    public Journal(long accountid, String type, double amount) {
         this.accountId = accountid;
         this.transactionType = type;
         this.amount = amount;
-        this.timeStamp = createdAt;
+        this.timeStamp = new Timestamp(System.currentTimeMillis());
     }
 
 	public long getId() {
@@ -73,11 +75,11 @@ public class Journal
     }
 
     public String getTimeStamp() {
-        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(timeStamp);
-    }
-
-    public void setTimestamp(Timestamp timeStamp) {
-        this.timeStamp = timeStamp;
+        if(timeStamp != null) {
+            return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(timeStamp);
+        } else {
+            return "No Time Provided";
+        }
     }
 
     @Override
