@@ -2,7 +2,9 @@ package com.capone.ccapi.core;
 
 import javax.persistence.*;
 import javax.persistence.GenerationType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "journals")
@@ -13,13 +15,20 @@ public class Journal
 	private long id;
 
 	@Column(name ="accountid", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private long accountId;
 
 	@Column(name ="transactiontype", nullable = false)
+    @JsonProperty("type")
 	private String transactionType;
+
+    @Column(name ="createdAt", nullable = false)
+    @JsonProperty("timeStamp")
+    private Timestamp timeStamp; 
 
 	@Column(name ="amount")
 	private double amount;
+
 
 	public Journal(){}
 
