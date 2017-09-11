@@ -2,7 +2,10 @@ package com.capone.ccapi.resources;
 
 import com.capone.ccapi.core.Account;
 import com.capone.ccapi.db.AccountDAO;
+import com.capone.ccapi.api.AccountSummary;
 import io.dropwizard.hibernate.UnitOfWork;
+import com.capone.ccapi.util.LedgerService;
+import com.capone.ccapi.util.JournalService;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.*;
 import io.dropwizard.jersey.params.LongParam;
@@ -19,15 +22,24 @@ public class AccountResource
 
 	@POST
 	@UnitOfWork
-	public Account createAccount(Account account) {
-		return accountDAO.create(account);
+	public long createAccount(Account account) {
+		return accountDAO.create(account).getId();
+	}
+
+	@GET
+	@UnitOfWork
+	public double getAllAccount() {
+		return LedgerService.getInstance().getSumOfPrincipal(1);
 	}
 
 	@GET
 	@Path("/{id}")
 	@UnitOfWork
-	public Account getAccount(@PathParam("id") LongParam accountId) {
-		return findSafely(accountId.get());
+	public AccountSummary getAccount(@PathParam("id") LongParam accountId) {
+		AccountSummary summary = new AccountSummary(accountId.get());
+		summary.setPrincipal(LedgerService.getInstance().getSumOfPrincipal(accountId.get()));
+		summary.setRelatedTransactions(JournalService.getInstance().getJournalsRelatedToAccount(accountId.get()));
+		return summary;
 	}
 
 	private Account findSafely(long accountId) {

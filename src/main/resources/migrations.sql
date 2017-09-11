@@ -14,3 +14,10 @@ CREATE TABLE IF NOT EXISTS journals (
   createdAt TIMESTAMP default current_timestamp
 );
 
+CREATE TABLE IF NOT EXISTS ledgers (
+  id SERIAL PRIMARY KEY,
+  accountid INTEGER references accounts(Id),
+  credit numeric(18,2),
+  debit numeric(18,2),
+  type TEXT not null
+);

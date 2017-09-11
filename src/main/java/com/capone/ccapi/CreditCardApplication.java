@@ -3,6 +3,7 @@ package com.capone.ccapi;
 import com.capone.ccapi.resources.*;
 import com.capone.ccapi.core.*;
 import com.capone.ccapi.db.*;
+import com.capone.ccapi.util.*;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -18,7 +19,7 @@ import com.washingtonpost.dropwizard.exceptions.mappers.RuntimeExceptionMapper;
 public class CreditCardApplication extends Application<CreditCardServiceConfiguration> {
 
     private final HibernateBundle<CreditCardServiceConfiguration> hibernateBundle =
-        new HibernateBundle<CreditCardServiceConfiguration>(Account.class, Journal.class) {
+        new HibernateBundle<CreditCardServiceConfiguration>(Account.class, Journal.class, Ledger.class) {
             @Override
             public DataSourceFactory getDataSourceFactory(CreditCardServiceConfiguration configuration) {
                 return configuration.getDataSourceFactory();
@@ -59,9 +60,15 @@ public class CreditCardApplication extends Application<CreditCardServiceConfigur
     public void run(final CreditCardServiceConfiguration configuration,
                     final Environment environment) {
 
+        /* Prepare all the DAOs*/
         SessionFactory session = hibernateBundle.getSessionFactory();
         final AccountDAO accountDao = new AccountDAO(session);
         final JournalDAO journalDao = new JournalDAO(session);
+        final LedgerDAO ledgerDao = new LedgerDAO(session);
+
+        /*Init all services*/
+        LedgerService.createLedgerService(ledgerDao);
+        JournalService.createJournalService(journalDao);
 
         environment.jersey().register(new HealthResource());
         environment.jersey().register(new AccountResource(accountDao));
