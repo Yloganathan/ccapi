@@ -37,6 +37,7 @@ public class AccountResourceTest {
 
     @Before
     public void setUp() {
+        accountCaptor = ArgumentCaptor.forClass(Account.class);
         account = new Account();
         account.setId(1);
         account.setName("WonderWoman");
@@ -56,9 +57,14 @@ public class AccountResourceTest {
                 .post(Entity.entity(account, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
-       // verify(accountDAO).create(accountCaptor.capture());
-       // assertThat(accountCaptor.getValue()).isEqualTo(account);
+        verify(accountDAO).create(accountCaptor.capture());
+        assertThat(accountCaptor.getValue()).isEqualTo(account);
     }
+
+    //TODO: test get account summary
+    //TODO: get account summary for non existant account
+    //SQLDummy sqlDummy = Mockito.mock(SQLDummy.class);
+//Mockito.when(sqlDummy.getAllShips()).thenReturn(new ArrayList< Ship >())
 
 
 }

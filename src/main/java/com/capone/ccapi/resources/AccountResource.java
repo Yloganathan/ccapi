@@ -30,13 +30,10 @@ public class AccountResource
 	@Path("/{id}")
 	@UnitOfWork
 	public AccountSummary getAccount(@PathParam("id") LongParam accountId) {
+		accountDAO.findById(accountId.get()).orElseThrow(() -> new NotFoundException("No such account."));
 		AccountSummary summary = new AccountSummary(accountId.get());
 		summary.setPrincipal(LedgerService.getInstance().getSumOfPrincipal(accountId.get()));
 		summary.setRelatedTransactions(JournalService.getInstance().getJournalsRelatedToAccount(accountId.get()));
 		return summary;
 	}
-
-	private Account findSafely(long accountId) {
-        return accountDAO.findById(accountId).orElseThrow(() -> new NotFoundException("No such account."));
-    }
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Optional;
+import javax.ws.rs.NotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,10 +62,4 @@ public class JournalDAOTest {
     public void handlesNullTransactionType() {
         daoTestRule.inTransaction(() -> journalDAO.create(new Journal(account.getId(), null, 500)));
     }
-
-
-    // @Test(expected = Exception.class)
-    // public void handlesNonExistantAccount() {
-    //     daoTestRule.inTransaction(() -> journalDAO.create(new Journal(0, "sometype", 500,new Timestamp(System.currentTimeMillis()))));
-    // }
 }

@@ -3,6 +3,7 @@ package com.capone.ccapi.resources;
 import com.capone.ccapi.core.Journal;
 import com.capone.ccapi.db.JournalDAO;
 import com.capone.ccapi.util.LedgerService;
+import com.capone.ccapi.util.AccountService;
 import io.dropwizard.hibernate.UnitOfWork;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.*;
@@ -22,10 +23,15 @@ public class JournalResource
 
 	@POST
 	@UnitOfWork
-	public Journal createJournal(Journal journal) {
-		Journal createdJournal = journalDAO.create(journal);
-		LedgerService.getInstance().createLedgers(createdJournal);
-		return createdJournal;
+	public Journal createJournal(Journal journal) {		
+	   if(AccountService.getInstance().isAccountValid(journal.getAccountId())) {
+			Journal createdJournal = journalDAO.create(journal);
+			LedgerService.getInstance().createLedgers(createdJournal);
+			return createdJournal;
+		} else {
+			 throw new NotFoundException("No such account.");
+		}
 	}
+
 
 }

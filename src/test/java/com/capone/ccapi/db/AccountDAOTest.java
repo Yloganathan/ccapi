@@ -25,9 +25,9 @@ public class AccountDAOTest {
 
     @Test
     public void createAccount() {
-        final Account ww = daoTestRule.inTransaction(() -> accountDAO.create(new Account("WonerWoman")));
+        final Account ww = daoTestRule.inTransaction(() -> accountDAO.create(new Account("WonderWoman")));
         assertThat(ww.getId()).isGreaterThan(0);
-        assertThat(ww.getName()).isEqualTo("WonerWoman");
+        assertThat(ww.getName()).isEqualTo("WonderWoman");
         assertThat(accountDAO.findById(ww.getId())).isEqualTo(Optional.of(ww));
     }
 
