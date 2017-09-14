@@ -71,7 +71,7 @@ run {
 tasks.withType(Test) {
     testLogging {
         // set options for log level LIFECYCLE
-        events "passed", "skipped", "failed"
+        events "passed", "skipped", "failed", "standardError"
         showExceptions true
         exceptionFormat "full"
         showCauses true

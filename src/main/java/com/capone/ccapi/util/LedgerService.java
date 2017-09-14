@@ -31,8 +31,10 @@ public class LedgerService
 
 	public void createLedgers(Journal journal) {
 		LedgerMap cdmapping = transactionToLedgerMap.get(journal.getTransactionType().toLowerCase());
-		ledgerDAO.create(new Ledger(journal.getAccountId(),cdmapping.getCreditLedger(),journal.getAmount(),0));
-		ledgerDAO.create(new Ledger(journal.getAccountId(),cdmapping.getDebitLedger(),0,journal.getAmount()));
+		if(cdmapping != null ) {
+			ledgerDAO.create(new Ledger(journal.getAccountId(),cdmapping.getCreditLedger(),journal.getAmount(),0));
+			ledgerDAO.create(new Ledger(journal.getAccountId(),cdmapping.getDebitLedger(),0,journal.getAmount()));
+		}
 	}
 
 	public double getSumOfPrincipal(long accountId) {

@@ -11,6 +11,8 @@ public class AccountSummary
 	@JsonProperty("transactions")
 	private List<Journal> relatedTransactions;
 
+    public AccountSummary() {}
+    
 	public AccountSummary(long id) {
 		this.id = id;
 	}
