@@ -1,6 +1,7 @@
 # ccapi
 
-#Setup Database
+Setup Database
+---
 1. npm install postgresql
 2. Brew install gradle
 3. createDB ccapi
@@ -17,10 +18,10 @@ Health Check
 
 Routes
 ---
-POST    /accounts (com.capone.ccapi.resources.AccountResource)
-GET     /accounts/{id} (com.capone.ccapi.resources.AccountResource)
-GET     /health (com.capone.ccapi.resources.HealthResource)
-POST    /journals (com.capone.ccapi.resources.JournalResource)
+1. POST    /accounts (com.capone.ccapi.resources.AccountResource)
+2. GET     /accounts/{id} (com.capone.ccapi.resources.AccountResource)
+3. GET     /health (com.capone.ccapi.resources.HealthResource)
+4. POST    /journals (com.capone.ccapi.resources.JournalResource)
  
 
  
