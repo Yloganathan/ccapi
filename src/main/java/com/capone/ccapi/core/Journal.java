@@ -31,7 +31,7 @@ public class Journal
 	private double amount;
 
 
-	public Journal(){
+	public Journal() {
         this.timeStamp = new Timestamp(System.currentTimeMillis());
     }
 

@@ -57,7 +57,9 @@ public class JournalResourceTest {
 
     @After
     public void tearDown() {
+        reset(accountDAO);
         reset(journalDAO);
+        reset(ledgerDAO);
     }
 
     @Test
