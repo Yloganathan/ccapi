@@ -22,7 +22,6 @@ public class AccountService
 	}
 
 	public Boolean isAccountValid(long accountId) {
-		System.out.print(accountDAO.findById(accountId).isPresent());
 		return accountDAO.findById(accountId).isPresent();
 	}
 

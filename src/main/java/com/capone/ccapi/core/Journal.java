@@ -104,4 +104,15 @@ public class Journal
         return Objects.hash(id, accountId, transactionType, amount);
     }
 
+    @Override
+    public String toString()
+    {
+        return "Journal{" +
+            "id=" + id +
+            ", accountId='" + accountId + '\'' +
+            ", transactiontype='" + transactionType + '\'' +
+            ", amount='" + amount + '\'' +
+            '}';
+    }
+
 }

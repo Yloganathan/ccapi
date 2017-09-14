@@ -4,6 +4,8 @@ import com.capone.ccapi.core.Journal;
 import com.capone.ccapi.db.JournalDAO;
 import com.capone.ccapi.core.Account;
 import com.capone.ccapi.db.AccountDAO;
+import com.capone.ccapi.db.LedgerDAO;
+import com.capone.ccapi.util.LedgerService;
 import com.capone.ccapi.util.AccountService;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +34,7 @@ public class JournalResourceTest {
 
     private static final JournalDAO journalDAO = mock(JournalDAO.class);
     private static final AccountDAO accountDAO = mock(AccountDAO.class);
-    
+    private static final LedgerDAO ledgerDAO = mock(LedgerDAO.class);
 
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder()
@@ -42,17 +44,15 @@ public class JournalResourceTest {
     @Captor
     private ArgumentCaptor<Journal> journalCaptor;
     private Journal journal;
-    private Optional<Account> optionalAccount =  Optional.empty();
     private Account account;
 
     @Before
     public void setUp() {
+        AccountService.createAccountService(accountDAO);
+        LedgerService.createLedgerService(ledgerDAO);
         account = new Account("WonderWoman");
-        account.setId(1);
-        Optional<Account> optionalAccount = Optional.ofNullable(account);
-    System.out.print(optionalAccount.get());
         journalCaptor = ArgumentCaptor.forClass(Journal.class);
-        journal = new Journal(1,"purchase",500);
+        journal = new Journal(0,"purchase",500);
     }
 
     @After
@@ -63,15 +63,27 @@ public class JournalResourceTest {
     @Test
     public void createJournal() throws JsonProcessingException {
         when(journalDAO.create(any(Journal.class))).thenReturn(journal);
-        when(accountDAO.findById(anyLong())).thenReturn(optionalAccount);
-        AccountService.createAccountService(accountDAO);
+        when(accountDAO.findById(anyLong())).thenReturn(Optional.ofNullable(account));
+        
         final Response response = resources.target("/journals")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.entity(journal, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
-        verify(journalDAO).create(journal);
+        verify(journalDAO).create(journalCaptor.capture());
         assertThat(journalCaptor.getValue()).isEqualTo(journal);
+    }
+
+    @Test
+    public void createJournalWithNoAccount() throws JsonProcessingException {
+        when(journalDAO.create(any(Journal.class))).thenReturn(journal);
+        when(accountDAO.findById(anyLong())).thenReturn(Optional.empty());
+
+        final Response response = resources.target("/journals")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.entity(journal, MediaType.APPLICATION_JSON_TYPE));
+
+        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
     }
 
 
