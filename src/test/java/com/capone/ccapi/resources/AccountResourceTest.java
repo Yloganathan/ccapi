@@ -15,15 +15,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.GenericType;
 import java.util.Optional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -62,6 +61,8 @@ public class AccountResourceTest {
     @After
     public void tearDown() {
         reset(accountDAO);
+        reset(journalDAO);
+        reset(ledgerDAO);
     }
 
     @Test

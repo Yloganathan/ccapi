@@ -51,7 +51,6 @@ public class CreditCardApplication extends Application<CreditCardServiceConfigur
                 bootstrap.getConfigurationSourceProvider(),
                 new EnvironmentVariableSubstitutor(false)
             ));
-
         bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(migrationBundle);
     }
