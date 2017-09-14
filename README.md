@@ -20,15 +20,15 @@ Health Check
 Routes
 ---
 1. POST    /accounts 
-          
-           `{
+           `example shape:
+           {
            	"name": "wonderwoman"
            }`
 2. GET     /accounts/{id} 
 3. GET     [/health](http://localhost:8080/health)
 4. POST    /journals 
-           
-           `{
+           `example shape:
+           {
 	            "accountId":"1",
 	            "type":"purchase",
 	            "amount":"499.99"
