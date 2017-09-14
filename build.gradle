@@ -61,14 +61,6 @@ task stage() {
     }
 }
 
-// task setupEnv() {
-//   // environment 'JDBC_DATABASE_URL','jdbc:postgresql://localhost:5432/ccapi'
-// }
-
-// tasks.withType(JavaCompile) {
-//   compileTask -> compileTask.dependsOn setupEnv
-// }
-
 build.mustRunAfter clean
 shadowJar.mustRunAfter build
 
