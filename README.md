@@ -17,7 +17,8 @@ Health Check
 ---
 1. To see your applications health enter url [http://localhost:8081/healthcheck](http://localhost:8081/healthcheck)
 
-Routes
+Routes 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2a29c9640093482367a8)
 ---
 1. POST    /accounts 
            `example shape:
