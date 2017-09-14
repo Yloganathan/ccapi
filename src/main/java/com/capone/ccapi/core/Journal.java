@@ -11,27 +11,27 @@ import java.text.SimpleDateFormat;
 @Table(name = "journals")
 public class Journal
 {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
 
-	@Column(name ="accountid", nullable = false)
+    @Column(name ="accountid", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private long accountId;
-
-	@Column(name ="transactiontype", nullable = false)
+    private long accountId;
+   
+    @Column(name ="transactiontype", nullable = false)
     @JsonProperty("type")
-	private String transactionType;
+    private String transactionType;
 
     @Column(name ="createdAt")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp timeStamp; 
 
-	@Column(name ="amount", nullable = false)
-	private double amount;
+    @Column(name ="amount", nullable = false)
+    private double amount;
 
 
-	public Journal() {
+    public Journal() {
         this.timeStamp = new Timestamp(System.currentTimeMillis());
     }
 
@@ -42,7 +42,7 @@ public class Journal
         this.timeStamp = new Timestamp(System.currentTimeMillis());
     }
 
-	public long getId() {
+    public long getId() {
         return id;
     }
 
@@ -50,7 +50,7 @@ public class Journal
         this.id = id;
     }
 
-	public long getAccountId() {
+    public long getAccountId() {
         return accountId;
     }
 
