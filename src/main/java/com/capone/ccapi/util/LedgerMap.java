@@ -7,11 +7,6 @@ public class LedgerMap
 
     protected LedgerMap(){}
 
-    public LedgerMap(String creditLedger, String debitLedger){
-	this.creditLedger = creditLedger;
-	this.debitLedger = debitLedger;
-    }
-
     public String getCreditLedger(){
 	return creditLedger;
     }
