@@ -8,13 +8,12 @@ import javax.ws.rs.*;
 @Produces(MediaType.APPLICATION_JSON)
 public class HealthResource {
 
-	public HealthResource(){
+    public HealthResource(){
+    }
 
-	}
-
-	@GET
-	@UnitOfWork
-	public String checkHealth(){
-	  return "A OK";
-	}
+    @GET
+    @UnitOfWork
+    public String checkHealth(){
+        return "A OK";
+    }
 }
