@@ -6,23 +6,23 @@ import java.util.*;
 
 public class AccountService 
 {
-	private static AccountService accountServiceInstance;
-	private final AccountDAO accountDAO;
+    private static AccountService accountServiceInstance;
+    private final AccountDAO accountDAO;
 
-	public AccountService(AccountDAO accountDAO) {
-		this.accountDAO = accountDAO;
-	}
+    public AccountService(AccountDAO accountDAO) {
+	this.accountDAO = accountDAO;
+    }
 
-	public static void createAccountService(AccountDAO accountDAO) {
-		accountServiceInstance = new AccountService(accountDAO);
-	}
+    public static void createAccountService(AccountDAO accountDAO) {
+	accountServiceInstance = new AccountService(accountDAO);
+    }
 
-	public static AccountService getInstance() {
-		return accountServiceInstance;
-	}
+    public static AccountService getInstance() {
+	return accountServiceInstance;
+    }
 
-	public Boolean isAccountValid(long accountId) {
-		return accountDAO.findById(accountId).isPresent();
-	}
+    public Boolean isAccountValid(long accountId) {
+	return accountDAO.findById(accountId).isPresent();
+    }
 
 }

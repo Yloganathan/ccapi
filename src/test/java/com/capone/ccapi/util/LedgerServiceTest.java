@@ -27,7 +27,7 @@ public class LedgerServiceTest {
 
     private static final LedgerDAO ledgerDAO = mock(LedgerDAO.class);
 
-	@Captor
+    @Captor
     private ArgumentCaptor<Ledger> ledgerCaptor;
 	
     @Before
@@ -49,7 +49,7 @@ public class LedgerServiceTest {
         assertThat(ledgerCaptor.getValue()).isEqualTo(new Ledger(1,"Cash-Out", 0, 500));
     }
 
-	@Test
+    @Test
     public void createLedgersFailureCase() {
         when(ledgerDAO.create(any(Ledger.class))).thenReturn(new Ledger());
         LedgerService.getInstance().createLedgers(new Journal(1,"sometype",500));

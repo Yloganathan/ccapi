@@ -6,23 +6,23 @@ import java.util.*;
 
 public class JournalService 
 {
-	private static JournalService accountServiceInstance;
-	private final JournalDAO journalDAO;
+    private static JournalService accountServiceInstance;
+    private final JournalDAO journalDAO;
 
-	public JournalService(JournalDAO journalDAO) {
-		this.journalDAO = journalDAO;
-	}
+    public JournalService(JournalDAO journalDAO) {
+	this.journalDAO = journalDAO;
+    }
 
-	public static void createJournalService(JournalDAO journalDAO) {
-		accountServiceInstance = new JournalService(journalDAO);
-	}
+    public static void createJournalService(JournalDAO journalDAO) {
+	accountServiceInstance = new JournalService(journalDAO);
+    }
 
-	public static JournalService getInstance() {
-		return accountServiceInstance;
-	}
+    public static JournalService getInstance() {
+	return accountServiceInstance;
+    }
 
-	public List<Journal> getJournalsRelatedToAccount(long accountId) {
-		return journalDAO.findJournalsByAccountId(accountId);
-	}
+    public List<Journal> getJournalsRelatedToAccount(long accountId) {
+	return journalDAO.findJournalsByAccountId(accountId);
+    }
 
 }

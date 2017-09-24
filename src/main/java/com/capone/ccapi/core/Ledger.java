@@ -11,17 +11,17 @@ public class Ledger
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
-	@Column(name ="accountid", nullable = false)
-	private long accountId;
+    @Column(name ="accountid", nullable = false)
+    private long accountId;
 
-	@Column(name ="debit")
-	private double debit;
+    @Column(name ="debit")
+    private double debit;
 
-	@Column(name ="credit")
-	private double credit;
+    @Column(name ="credit")
+    private double credit;
 
-	@Column(name ="type")
-	private String type;
+    @Column(name ="type")
+    private String type;
 
     public Ledger(){}
 

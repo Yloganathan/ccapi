@@ -9,20 +9,20 @@ import java.util.*;
 
 public class LedgerDAO extends AbstractDAO<Ledger>
 {
-	public LedgerDAO(SessionFactory sessionFactory) {
-		super(sessionFactory);
-	}
+    public LedgerDAO(SessionFactory sessionFactory) {
+	super(sessionFactory);
+    }
 
-	public Optional<Ledger> findById(long id) {
-		return Optional.ofNullable(get(id));
-	}
+    public Optional<Ledger> findById(long id) {
+	return Optional.ofNullable(get(id));
+    }
 
-	public Ledger create(Ledger account) {
-		return persist(account);
-	}
+    public Ledger create(Ledger account) {
+	return persist(account);
+    }
 
-	public List<Ledger> findByLedgerTypeAndAccountId(String type, long accountId) {
-		CriteriaBuilder builder = currentSession().getCriteriaBuilder();
+    public List<Ledger> findByLedgerTypeAndAccountId(String type, long accountId) {
+	CriteriaBuilder builder = currentSession().getCriteriaBuilder();
         CriteriaQuery<Ledger> criteria = builder.createQuery( Ledger.class );
         Root<Ledger> LedgerRoot = criteria.from(Ledger.class);
         criteria.select( LedgerRoot);
@@ -30,5 +30,5 @@ public class LedgerDAO extends AbstractDAO<Ledger>
         	, builder.equal( LedgerRoot.get( Ledger_.accountId ), accountId )}) 
         	);
         return list(criteria);
-	}
+    }
 }

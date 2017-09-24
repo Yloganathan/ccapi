@@ -6,18 +6,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AccountSummary
 {
-	private long id;
-	private double principal;
-	@JsonProperty("transactions")
-	private List<Journal> relatedTransactions;
+    private long id;
+    private double principal;
+    @JsonProperty("transactions")
+    private List<Journal> relatedTransactions;
 
     public AccountSummary() {}
     
-	public AccountSummary(long id) {
-		this.id = id;
-	}
+    public AccountSummary(long id) {
+	this.id = id;
+    }
 
-	public long getId() {
+    public long getId() {
         return id;
     }
 
