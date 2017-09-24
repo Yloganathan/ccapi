@@ -14,35 +14,26 @@ import io.dropwizard.jersey.params.LongParam;
 @Produces(MediaType.APPLICATION_JSON)
 public class AccountResource 
 {
-	private final AccountDAO accountDAO;
+    private final AccountDAO accountDAO;
+	
+    public AccountResource(AccountDAO accountDAO) {
+	this.accountDAO = accountDAO;
+    }
 
-	public AccountResource(AccountDAO accountDAO) {
-		this.accountDAO = accountDAO;
-	}
+    @POST
+    @UnitOfWork
+    public Account createAccount(Account account) {
+	return accountDAO.create(account);
+    }
 
-	@POST
-	@UnitOfWork
-	public long createAccount(Account account) {
-		return accountDAO.create(account).getId();
-	}
-
-	@GET
-	@UnitOfWork
-	public double getAllAccount() {
-		return LedgerService.getInstance().getSumOfPrincipal(1);
-	}
-
-	@GET
-	@Path("/{id}")
-	@UnitOfWork
-	public AccountSummary getAccount(@PathParam("id") LongParam accountId) {
-		AccountSummary summary = new AccountSummary(accountId.get());
-		summary.setPrincipal(LedgerService.getInstance().getSumOfPrincipal(accountId.get()));
-		summary.setRelatedTransactions(JournalService.getInstance().getJournalsRelatedToAccount(accountId.get()));
-		return summary;
-	}
-
-	private Account findSafely(long accountId) {
-        return accountDAO.findById(accountId).orElseThrow(() -> new NotFoundException("No such account."));
+    @GET
+    @Path("/{id}")
+    @UnitOfWork
+    public AccountSummary getAccount(@PathParam("id") LongParam accountId) {
+	accountDAO.findById(accountId.get()).orElseThrow(() -> new NotFoundException("No such account."));
+	AccountSummary summary = new AccountSummary(accountId.get());
+	summary.setPrincipal(LedgerService.getInstance().getSumOfPrincipal(accountId.get()));
+	summary.setRelatedTransactions(JournalService.getInstance().getJournalsRelatedToAccount(accountId.get()));
+	return summary;
     }
 }

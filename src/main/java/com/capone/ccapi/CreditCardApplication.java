@@ -51,7 +51,6 @@ public class CreditCardApplication extends Application<CreditCardServiceConfigur
                 bootstrap.getConfigurationSourceProvider(),
                 new EnvironmentVariableSubstitutor(false)
             ));
-
         bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(migrationBundle);
     }
@@ -69,6 +68,7 @@ public class CreditCardApplication extends Application<CreditCardServiceConfigur
         /*Init all services*/
         LedgerService.createLedgerService(ledgerDao);
         JournalService.createJournalService(journalDao);
+        AccountService.createAccountService(accountDao);
 
         environment.jersey().register(new HealthResource());
         environment.jersey().register(new AccountResource(accountDao));

@@ -7,15 +7,15 @@ import java.util.Optional;
 
 public class AccountDAO extends AbstractDAO<Account>
 {
-	public AccountDAO(SessionFactory sessionFactory) {
-		super(sessionFactory);
-	}
+    public AccountDAO(SessionFactory sessionFactory) {
+	super(sessionFactory);
+    }
 
-	public Optional<Account> findById(long id) {
-		return Optional.ofNullable(get(id));
-	}
+    public Optional<Account> findById(long id) {
+	return Optional.ofNullable(get(id));
+    }
 
-	public Account create(Account account) {
-		return persist(account);
-	}
+    public Account create(Account account) {
+	return persist(account);
+    }
 }
