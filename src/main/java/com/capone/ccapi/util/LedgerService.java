@@ -12,6 +12,9 @@ public class LedgerService
 	put("purchase" , LedgerMap.create()
 	                 .setCreditLedger("Principal")
 	                 .setDebitLedger("Cash-Out"));
+	put("payment", LedgerMap.create()
+                     .setCreditLedger("Cash-In")
+                     .setDebitLedger("Principal"));
     }};
 
     private static LedgerService ledgerServiceInstance;
@@ -39,6 +42,6 @@ public class LedgerService
 
     public double getSumOfPrincipal(long accountId) {
 	List<Ledger> principalLedgers = ledgerDAO.findByLedgerTypeAndAccountId("Principal", accountId);
-	return principalLedgers.stream().collect(Collectors.summingDouble(o -> o.getCredit()));
+	return principalLedgers.stream().collect(Collectors.summingDouble(o -> o.getCredit())) - principalLedgers.stream().collect(Collectors.summingDouble(o -> o.getDebit())) ;
     }
 }
